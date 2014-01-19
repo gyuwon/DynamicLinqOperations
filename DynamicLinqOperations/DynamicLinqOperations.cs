@@ -23,6 +23,7 @@ namespace DynamicLinq
             var funcType = typeof(Func<,>).MakeGenericType(typeof(T), prop.PropertyType);
             return Delegate.CreateDelegate(funcType, prop.GetGetMethod());
         }
+
         public static IEnumerable<T> OrderBy<T>(this IEnumerable<T> s, string propertyName)
         {
             var prop = typeof(T).GetProperty(propertyName);
@@ -31,6 +32,14 @@ namespace DynamicLinq
             var operation = orderByTemplate.MakeGenericMethod(typeof(T), prop.PropertyType);
             var keySelector = GetGetter<T>(prop);
             return (IEnumerable<T>)operation.Invoke(null, new object[] { s, keySelector });
+        }
+
+        public static IEnumerable<TSource> WhereReflection<TSource, TProperty>(this IEnumerable<TSource> s, string propertyName, Func<TProperty, bool> predicate)
+        {
+            var prop = typeof(TSource).GetProperty(propertyName);
+            if (prop == null)
+                throw new InvalidOperationException("Property Not Found");
+            return s.Where(e => predicate((TProperty)prop.GetValue(e)));
         }
 
         public static IEnumerable<TSource> Where<TSource, TProperty>(this IEnumerable<TSource> s, string propertyName, Func<TProperty, bool> predicate)

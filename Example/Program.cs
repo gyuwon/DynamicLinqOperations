@@ -8,7 +8,7 @@ namespace Example
     {
         public static void Main(string[] args)
         {
-            const int n = 1000000;
+            const int n = 100000;
             Random r = new Random();
 
             Console.WriteLine("n: {0}", n);
@@ -17,20 +17,23 @@ namespace Example
 
             using (Job.StartNew("OrderBy"))
             {
-                foreach (var t in s.OrderBy("Item2").Take(10))
+                foreach (var t in s.OrderBy("Item2").Take(5))
                     Console.WriteLine(t);
             }
 
             using (Job.StartNew("Where(typed)"))
             {
-                foreach (var t in s.Where("Item2", (int p) => p < 150).Take(10))
-                    Console.WriteLine(t);
+                Console.WriteLine(s.WhereReflection("Item2", (int p) => p < 150).Count());
+            }
+
+            using (Job.StartNew("Where(typed)"))
+            {
+                Console.WriteLine(s.Where("Item2", (int p) => p < 150).Count());
             }
 
             using (Job.StartNew("Where(dynamic)"))
             {
-                foreach (var t in s.Where("Item2", p => p < 150).Take(10))
-                    Console.WriteLine(t);
+                Console.WriteLine(s.Where("Item2", p => p < 150).Count());
             }
         }
     }
