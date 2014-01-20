@@ -21,17 +21,23 @@ namespace Example
                     Console.WriteLine(t);
             }
 
-            using (Job.StartNew("WhereReflection(typed)"))
+            Console.WriteLine();
+
+            using (Job.StartNew("Where(Reflection)"))
             {
                 Console.WriteLine(s.WhereReflection("Item2", (int p) => p < 150).Count());
             }
 
-            using (Job.StartNew("Where(typed)"))
+            Console.WriteLine();
+
+            using (Job.StartNew("Where(Delegate)"))
             {
                 Console.WriteLine(s.Where("Item2", (int p) => p < 150).Count());
             }
 
-            using (Job.StartNew("Where(dynamic)"))
+            Console.WriteLine();
+
+            using (Job.StartNew("Where(Dynamic)"))
             {
                 Console.WriteLine(s.Where("Item2", p => p < 150).Count());
             }
