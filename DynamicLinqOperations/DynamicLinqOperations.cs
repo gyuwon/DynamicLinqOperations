@@ -49,8 +49,8 @@ namespace DynamicLinq
                 throw new InvalidOperationException("Property Not Found");
             var operation = whereTemplate.MakeGenericMethod(typeof(TSource));
             var selector = (Func<TSource, TProperty>)GetGetter<TSource>(prop);
-            Func<TSource, bool> p = e => predicate(selector(e));
-            return (IEnumerable<TSource>)operation.Invoke(null, new object[] { s, p });
+            Func<TSource, bool> componentPredicate = e => predicate(selector(e));
+            return (IEnumerable<TSource>)operation.Invoke(null, new object[] { s, componentPredicate });
         }
 
         public static Func<TSource, bool> MakeComponentPredicate<TSource, TProperty>(Func<TSource, TProperty> getter, Func<dynamic, bool> propertyPredicate)
