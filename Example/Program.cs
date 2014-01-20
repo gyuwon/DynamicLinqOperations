@@ -8,7 +8,7 @@ namespace Example
     {
         public static void Main(string[] args)
         {
-            const int n = 100000;
+            const int n = 1000000;
             Random r = new Random();
 
             Console.WriteLine("n: {0}", n);
@@ -21,7 +21,7 @@ namespace Example
                     Console.WriteLine(t);
             }
 
-            using (Job.StartNew("Where(typed)"))
+            using (Job.StartNew("WhereReflection(typed)"))
             {
                 Console.WriteLine(s.WhereReflection("Item2", (int p) => p < 150).Count());
             }
